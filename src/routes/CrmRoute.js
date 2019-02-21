@@ -1,24 +1,26 @@
-// Route Chaining
-const routes = (app) => {
+import express from "express";
+import controller from '../controllers/CrmController';
 
-    app.route('/')
+const router = express.Router();
 
-    .get((req, res) => {
-        res.send(`This is the GET method`)
-    })
-    
-    .post((req, res) => {
-        res.send(`This is the POST method`)
-    })
-    
-    .put((req, res) => {
-        res.send(`This is the PUT method`)
-    })
-    
-    .delete((req, res) => {
-        res.send(`This is the DELETE method`)
-    })
+router.post('/newBlog', (req, res) => {
+    controller.insertBlog(req, res);
+});
 
-}
+router.get('/getBlogs', (req, res) => {
+    controller.getAllBlogs(req, res);
+});
 
-module.exports = routes;
+router.get('/blog/:blogId', (req, res) => {
+    controller.getBlogByID(req, res);
+});
+
+router.get('/updateBlog/:blogId', (req, res) => {
+    controller.updateBlog(req, res);
+});
+
+router.get('/deleteBlog/:blogId', (req, res) => {
+    controller.deleteBlog(req, res);
+}); 
+
+export default router; 
