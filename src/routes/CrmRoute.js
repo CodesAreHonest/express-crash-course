@@ -3,24 +3,19 @@ import controller from '../controllers/CrmController';
 
 const router = express.Router();
 
-router.post('/newBlog', (req, res) => {
-    controller.insertBlog(req, res);
-});
+const {
+    insertBlog, 
+    getAllBlogs, 
+    getBlogByID, 
+    updateBlog, 
+    deleteBlog 
+} 
+= controller;
 
-router.get('/getBlogs', (req, res) => {
-    controller.getAllBlogs(req, res);
-});
-
-router.get('/blog/:blogId', (req, res) => {
-    controller.getBlogByID(req, res);
-});
-
-router.get('/updateBlog/:blogId', (req, res) => {
-    controller.updateBlog(req, res);
-});
-
-router.get('/deleteBlog/:blogId', (req, res) => {
-    controller.deleteBlog(req, res);
-}); 
+router.post('/newBlog', insertBlog);
+router.get('/getBlogs', getAllBlogs);
+router.get('/blog/:blogId', getBlogByID);
+router.post('/updateBlog/:blogId', updateBlog);
+router.delete('/deleteBlog/:blogId', deleteBlog); 
 
 export default router; 

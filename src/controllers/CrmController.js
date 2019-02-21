@@ -1,12 +1,15 @@
-const BlogSchema = require('../models/CrmModel');
-const mongoose = require('../../connection');
+// const BlogSchema = require('../models/CrmModel');
+// const mongoose = require('../../connection');
+
+import BlogSchema from '../models/CrmModel';
+import mongoose from '../../connection';
 const Blog = mongoose.model('blog', BlogSchema);
 
 const controller = {};
 
-controller.insertBlog = (req, res) => {
+controller.insertBlog = async (req, res) => {
     let blog = new Blog(req.body);
-    blog.save((err, Blog) => {
+    await blog.save((err, Blog) => {
         if (err) {
             res.send(err);
         }
@@ -15,8 +18,8 @@ controller.insertBlog = (req, res) => {
     })
 }
 
-controller.getAllBlogs = (req, res) => {
-    Blog.find({}, (err, blogs) => {
+controller.getAllBlogs = async (req, res) => {
+    await Blog.find({}, (err, blogs) => {
         if (err) { 
             res.send (err); 
         } else { 
@@ -25,24 +28,27 @@ controller.getAllBlogs = (req, res) => {
     })
 }
 
-controller.getBlogByID = (req, res) => {
-    Blog.findById((req.params.blogId), (err, blog) => {
+controller.getBlogByID = async (req, res) => {
+    await Blog.findById((req.params.blogId), (err, blog) => {
         if (err) { res.send(err) }
 
         res.json(blog)
     })
 }
 
-controller.updateBlog = (req, res) => {
-    Blog.findOneAndUpdate({_id: req.params.blogId}, req.body, {new: true}, (err, updatedBlog) => {
+controller.updateBlog = async (req, res) => {
+    await Blog.findOneAndUpdate({_id: req.params.blogId}, req.body, {
+        new: true,
+        useFindAndModify: false,
+    }, (err) => {
         if (err) {res.send(err)}
 
-        res.json(updateBlog);
+        res.json({'status': 'Success'});
     })
 }
 
-controller.deleteBlog = (req, res) => {
-    Blog.deleteOne({
+controller.deleteBlog = async (req, res) => {
+    await Blog.deleteOne({
         _id: req.params.blogId
     }, (err) => {
         if (err) {res.send (err)}
